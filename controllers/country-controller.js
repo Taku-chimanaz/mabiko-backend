@@ -1,4 +1,5 @@
 import Country from "../Models/Country.js";
+import { success, internalErr } from "../responses.js";
 
 const getAll = (req,res)=> {
 
@@ -6,19 +7,44 @@ const getAll = (req,res)=> {
     .then(countries => {
 
         res.json({
-            message: "request successful",
+            message: success,
             countries
         })
     })
     .catch(err => {
 
         res.status(500).json({
-            message: "Something went wrong",
+            message: internalErr,
+            err: err.message
+        })
+    })
+}
+
+const addCountry = (req,res) => {
+
+    const {name, branches} = req.body;
+
+    new Country({
+        name,
+        branches
+    }).save()
+    .then(country => {
+
+        res.json({
+            message: success,
+            country
+        })
+    })
+    .catch(err => {
+
+        res.status(500).json({
+            message: internalErr,
             err: err.message
         })
     })
 }
 
 export default {
-    getAll
+    getAll,
+    addCountry
 }
