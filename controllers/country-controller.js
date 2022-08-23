@@ -79,10 +79,23 @@ const removeBranch = async (req,res)=> {
 }
 
 
+const deleteCountry = (req,res)=> {
+
+    const id = req.params.id;
+
+    Country.findByIdAndDelete(id)
+    .then(country => {
+        successHandlerFunction(res,country)
+    })
+    .catch(err => {
+        internalErrHandlerFunction(res,err)
+    })
+}
 
 export default {
     getAll,
     addCountry,
     addBranch,
-    removeBranch
+    removeBranch,
+    deleteCountry
 }
