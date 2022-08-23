@@ -1,22 +1,17 @@
 import Country from "../Models/Country.js";
-import { success, internalErr, notFoundErr} from "../responses.js";
+import {
+    internalErrHandlerFunction,
+    notFoundHandlerFunction,
+    successHandlerFunction} from "../responses.js";
 
 const getAll = (req,res)=> {
 
     Country.find()
-    .then(countries => {
-
-        res.json({
-            message: success,
-            countries
-        })
+    .then(countries => {   
+        successHandlerFunction(res,countries)
     })
     .catch(err => {
-
-        res.status(500).json({
-            message: internalErr,
-            err: err.message
-        })
+       internalErrHandlerFunction(res,err)
     })
 }
 
@@ -29,20 +24,14 @@ const addCountry = (req,res) => {
         branches
     }).save()
     .then(country => {
-
-        res.json({
-            message: success,
-            country
-        })
+        successHandlerFunction(res,country)
     })
     .catch(err => {
-
-        res.status(500).json({
-            message: internalErr,
-            err: err.message
-        })
+        internalErrHandlerFunction(res,err)
     })
 }
+
+
 
 const addBranch = async (req,res) => {
 
@@ -56,27 +45,44 @@ const addBranch = async (req,res) => {
         const countrySaved = await country.save();
 
         if(countrySaved){
-            res.json({
-                message: success,
-                country
-            })
-        }else {
-            res.status(500).json({
-                message: internalErr,
-                countrySaved
-            })
+            successHandlerFunction(res,countrySaved)
+        }else {  
+            internalErrHandlerFunction(res,null)
         }
 
     }else {
-
-        res.status(404).json({
-            message: notFoundErr,
-        })
+        notFoundHandlerFunction(res)     
     }
 }
+
+
+const removeBranch = async (req,res)=> {
+
+    const {id, branch} = req.body;
+
+    const country = await Country.findById(id);
+
+    if(country){
+
+        country.branches = country.branches.filter(countryBranch => countryBranch !== branch);
+        const countrySaved = await country.save();
+
+        if(countrySaved){
+            successHandlerFunction(res,countrySaved)
+        }else {
+            internalErrHandlerFunction(res,null)
+        }
+
+    }else {
+        notFoundHandlerFunction(res)
+    }
+}
+
+
 
 export default {
     getAll,
     addCountry,
-    addBranch
+    addBranch,
+    removeBranch
 }
