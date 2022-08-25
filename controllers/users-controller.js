@@ -18,11 +18,11 @@ const signup = (req,res) => {
     }
 
 
-    const receptionist = new User(req.body);
+    const user = new User(req.body);
     const salt = bcrypt.genSaltSync(10);
-    receptionist.password = bcrypt.hashSync(password,salt);
+    user.password = bcrypt.hashSync(password,salt);
 
-    receptionist.save()
+    user.save()
     .then(user => {
         successHandlerFunction(res,user);
     })
@@ -44,7 +44,7 @@ const login = async (req,res)=>{
         if(correctPassword){
 
             user.password = null;
-            const token = jwt.sign({id: user._id,email: user.email},privateKey);
+            const token = jwt.sign({id: user._id,email: user.email},privateKey,{expiresIn: "24h"});
             const responseData = {user,token}
             successHandlerFunction(res,responseData);
 
