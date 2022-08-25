@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors'
 import countryRoutes from './routes/country-routes.js';
 import reservationRoutes from './routes/reservation.routes.js';
-import receptionistRoutes from './routes/receptionist.routes.js';
+import userRoutes from './routes/users.routes.js';
 
 const app = express();
 
@@ -34,4 +34,4 @@ mongoose.connect(localDB, err => {
 app.get('/', (req,res) => res.json({message: "Mabiko API"}));
 app.use('/api/country', countryRoutes);
 app.use('/api/reservation', reservationRoutes);
-app.use('/api/receptionist', receptionistRoutes)
+app.use('/api/users', userRoutes)
