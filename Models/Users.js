@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-const receptionistSchema = new Schema({
+const userSchema = new Schema({
 
     name: {
         type: String,
@@ -16,8 +16,13 @@ const receptionistSchema = new Schema({
     email: {
         type: String,
         required: true
+    },
+
+    role: {
+        type: String,
+        required: true
     }
 });
 
-const Receptionist = mongoose.model('Receptionist', receptionistSchema);
-export default Receptionist;
+const User = mongoose.model('User', userSchema);
+export default User;

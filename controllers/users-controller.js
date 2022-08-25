@@ -1,10 +1,10 @@
-import Receptionist from './../Models/Receptionist.js';
+import User from '../Models/Users.js';
 import bcrypt from 'bcryptjs';
 import {
     successHandlerFunction,
     internalErrHandlerFunction,
     notFoundHandlerFunction
-} from './../responses.js';
+} from '../responses.js';
 import { privateKey } from '../privateKey.js';
 import jwt from 'jsonwebtoken'
 
@@ -12,14 +12,13 @@ import jwt from 'jsonwebtoken'
 const signup = (req,res) => {
     
     const {password, email} = req.body;
-    console.log(password, email)
 
     if(!(email && password)){
         return res.status(400).send({ error: "Data not formatted properly" });
     }
 
 
-    const receptionist = new Receptionist(req.body);
+    const receptionist = new User(req.body);
     const salt = bcrypt.genSaltSync(10);
     receptionist.password = bcrypt.hashSync(password,salt);
 
@@ -36,8 +35,7 @@ const signup = (req,res) => {
 const login = async (req,res)=>{
 
     const {password,email} = req.body;
-    console.table(req.body)
-    const user = await Receptionist.findOne({email});
+    const user = await User.findOne({email});
 
     if(user){
         
@@ -45,6 +43,7 @@ const login = async (req,res)=>{
 
         if(correctPassword){
 
+            user.password = null;
             const token = jwt.sign({id: user._id,email: user.email},privateKey);
             const responseData = {user,token}
             successHandlerFunction(res,responseData);
