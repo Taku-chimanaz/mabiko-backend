@@ -2,8 +2,7 @@ import User from '../Models/Users.js';
 import bcrypt from 'bcryptjs';
 import {
     successHandlerFunction,
-    internalErrHandlerFunction,
-    notFoundHandlerFunction
+    internalErrHandlerFunction
 } from '../responses.js';
 import { privateKey } from '../privateKey.js';
 import jwt from 'jsonwebtoken'
