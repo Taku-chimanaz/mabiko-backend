@@ -5,6 +5,8 @@ import {
     internalErrHandlerFunction,
     notFoundHandlerFunction
 } from './../responses.js';
+import { privateKey } from '../privateKey.js';
+import jwt from 'jsonwebtoken'
 
 
 const signup = (req,res) => {
@@ -38,14 +40,19 @@ const login = async (req,res)=>{
     const user = await Receptionist.findOne({email});
 
     if(user){
-        console.log(user)
+        
         const correctPassword = await bcrypt.compare(password, user.password);
 
         if(correctPassword){
-            successHandlerFunction(res,user);
+
+            const token = jwt.sign({id: user._id,email: user.email},privateKey);
+            const responseData = {user,token}
+            successHandlerFunction(res,responseData);
+
         }else {
             res.status(400).json({ error: "Invalid Password" });
         }
+
     }else  {
         res.status(401).json({ error: "User does not exist" });
     }
