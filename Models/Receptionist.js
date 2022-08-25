@@ -17,4 +17,7 @@ const receptionistSchema = new Schema({
         type: String,
         required: true
     }
-})
+});
+
+const Receptionist = mongoose.model('Receptionist', receptionistSchema);
+export default Receptionist;
