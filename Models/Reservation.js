@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-const Schema = mongoose.Schema();
+const Schema = mongoose.Schema;
 
 const reservationSchema = new Schema({
 
@@ -19,11 +19,11 @@ const reservationSchema = new Schema({
     },
 
     time: {
-        type: time,
+        type: String,
         required: true
     },
 
-    people: {
+    peopleAttending: {
         type: Number,
         required: true
     },
