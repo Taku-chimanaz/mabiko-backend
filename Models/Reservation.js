@@ -3,6 +3,16 @@ const Schema = mongoose.Schema;
 
 const reservationSchema = new Schema({
 
+    active: {
+        type: Boolean,
+        default: true
+    },
+
+    stateReason: {
+        type: String,
+        default: "Date Not Passed"
+    },
+    
     customerName: {
         type: String,
         required: true
