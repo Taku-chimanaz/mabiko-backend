@@ -64,7 +64,10 @@ const updateReservation = (req,res) => {
 
 const cancelReservation = (req,res)=> {
 
-    Reservation.findByIdAndUpdate(id, {active: false, stateReason: "canceled by customer"})
+    Reservation.findByIdAndUpdate(id, {
+        active: false,
+        stateReason: "canceled by customer"
+    })
     .then(() => {
         successHandlerFunction(res,null)
     })
