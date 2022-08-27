@@ -62,6 +62,17 @@ const updateReservation = (req,res) => {
     })
 };
 
+const cancelReservation = (req,res)=> {
+
+    Reservation.findByIdAndUpdate(id, {active: false, stateReason: "canceled by customer"})
+    .then(() => {
+        successHandlerFunction(res,null)
+    })
+    .catch(err => {
+        internalErrHandlerFunction(res,err)
+    })
+}
+
 const deleteReservation  = (req,res)=>{
 
     const id = req.params.id;
@@ -81,5 +92,6 @@ export default {
     getReservation,
     createReservation,
     updateReservation,
-    deleteReservation
+    deleteReservation,
+    cancelReservation
 }
