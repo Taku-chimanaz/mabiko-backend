@@ -1,9 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import cron from 'node-cron';
 import cors from 'cors'
 import countryRoutes from './routes/country-routes.js';
 import reservationRoutes from './routes/reservation.routes.js';
 import userRoutes from './routes/users.routes.js';
+import { cancelUnattendedReservations } from './cancelUnattendedReservations.js';
 
 const app = express();
 
@@ -14,6 +16,9 @@ app.use(express.urlencoded({
     extended: true
 }));
 app.use(express.json());
+
+
+//cron.schedule('* */60 * * * * *', cancelUnattendedReservations)
 
 
 // DB Connection
