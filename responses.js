@@ -1,6 +1,6 @@
 export const notFoundHandlerFunction = (res)=>{
     res.status(404).json({
-        message: "Something went wrong",
+        message: "resource not found",
     })
 }
 
@@ -14,7 +14,7 @@ export const successHandlerFunction = (res,responseData) => {
 export const internalErrHandlerFunction = (res,err) => {
 
     res.status(500).json({
-        message: "resource not found",
+        message: "Something went wrong",
         err: err.message
     })
 }
