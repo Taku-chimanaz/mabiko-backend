@@ -4,9 +4,8 @@ import {
     internalErrHandlerFunction, 
     notFoundHandlerFunction
 } from './../responses.js';
-import { businessEmail, password } from '../privateKey.js';
+import { businessEmail, password, jsonDB} from '../privateKey.js';
 import nodemailer from 'nodemailer';
-import { JsonDB, Config } from 'node-json-db';
 
 
 const getReservation = async(req,res) =>{
@@ -122,22 +121,37 @@ const sendReservationCode = (req,res)=>{
         if(err) {
             internalErrHandlerFunction(res, err)
         } else {
-            successHandlerFunction(res, data)
+
+            // save codes in json-db
+            //  send response to user if saving was successfully
+            
+            jsonDB.push(`/${email}`, randomCode)
+            .then(() => successHandlerFunction(res, data))
+            .catch(err => internalErrHandlerFunction(res, err))
+            
         }
     });
 }
 
 const verifyReservation = async (req,res)=> {
 
-    const db = new JsonDB(new Config("reservation-codes", true, true, '/'));
+    const {email, code} = req.body;
+    console.log(req.body)
+    
+    try {
+        const savedCodeData = await jsonDB.getData(`/${email}`);
+        
+        if(savedCodeData === code){
+            successHandlerFunction(res,null)
+        }else {
+            const err = {message: "wrong code"};
+            internalErrHandlerFunction(res,err)
+        }
 
-    db.push('/email', "3404")
-    .then(result => console.log("Good: ", result))
-    .catch(err => console.log("Error: ", err))
-
-    db.getData("/")
-    .then(data => console.log("Data: ", data))
-    .catch(err => console.log("FetchErr: ", err));
+    }catch(err){
+        console.log("Something")
+        internalErrHandlerFunction(res,err)
+    }
 }
 
 
