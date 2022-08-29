@@ -49,5 +49,3 @@ export const  cancelUnattendedReservations = async () => {
     })
 
 }
-
-cancelUnattendedReservations();
