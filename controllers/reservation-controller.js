@@ -6,6 +6,7 @@ import {
 } from './../responses.js';
 import { businessEmail, password } from '../privateKey.js';
 import nodemailer from 'nodemailer';
+import { JsonDB, Config } from 'node-json-db';
 
 
 const getReservation = async(req,res) =>{
@@ -126,6 +127,19 @@ const sendReservationCode = (req,res)=>{
     });
 }
 
+const verifyReservation = async (req,res)=> {
+
+    const db = new JsonDB(new Config("reservation-codes", true, true, '/'));
+
+    db.push('/email', "3404")
+    .then(result => console.log("Good: ", result))
+    .catch(err => console.log("Error: ", err))
+
+    db.getData("/")
+    .then(data => console.log("Data: ", data))
+    .catch(err => console.log("FetchErr: ", err));
+}
+
 
 
 export default {
@@ -133,5 +147,6 @@ export default {
     createReservation,
     updateReservation,
     deleteReservation,
-    sendReservationCode
+    sendReservationCode,
+    verifyReservation
 }
